@@ -48,8 +48,3 @@ export function uuid(): string {
   }
   return s.join("");
 }
-
-// To clear all crimes for testing
-export async function clearCrimes(): Promise<void> {
-    await AsyncStorage.removeItem("crimes_v1"); // same key as saveCrimes/loadCrimes
-  }

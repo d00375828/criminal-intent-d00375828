@@ -20,58 +20,58 @@ type Theme = {
 
 export const THEMES: Record<string, Theme> = {
   lBlue: {
-    name: "Light Blue",
-    bg: "#F7FAFF",
-    text: "#0B1220",
+    name: "Blue",
+    bg: "#F5FEFF",
+    text: "#0A1F24",
     card: "#FFFFFF",
-    tint: "#0A84FF",
-    buttonBg: "#E6F0FF",
-    inputBg: "#F0F4FF",
+    tint: "#00A8E8",
+    buttonBg: "#E6F9FD",
+    inputBg: "#F0FAFC",
   },
-  lGreen: {
-    name: "Light Green",
-    bg: "#FAFFF7",
-    text: "#0F1A0F",
+  lTan: {
+    name: "Tan",
+    bg: "#FFFDF7",
+    text: "#1C1A12",
     card: "#FFFFFF",
-    tint: "#34C759",
-    buttonBg: "#E8F9EE",
-    inputBg: "#F1FBF5",
+    tint: "#D4A017",
+    buttonBg: "#FFF4D6",
+    inputBg: "#FFF8E8",
   },
-  lPink: {
-    name: "Light Pink",
-    bg: "#FFF7FA",
-    text: "#0B1220",
+  lPurple: {
+    name: "Purple",
+    bg: "#FBF8FF",
+    text: "#1B1226",
     card: "#FFFFFF",
-    tint: "#FF4D8D",
-    buttonBg: "#FFE5EE",
-    inputBg: "#FFEEF4",
+    tint: "#8E7CC3",
+    buttonBg: "#F1EBFF",
+    inputBg: "#F8F3FF",
   },
-  dBlue: {
-    name: "Dark Blue",
-    bg: "#0B1220",
-    text: "#EAF2FF",
-    card: "#121A2A",
-    tint: "#5AC8FA",
-    buttonBg: "#0F1A30",
-    inputBg: "#172036",
+  dTeal: {
+    name: "Teal",
+    bg: "#0A1E21",
+    text: "#E2F7F9",
+    card: "#132D31",
+    tint: "#2BD9D9",
+    buttonBg: "#0F2529",
+    inputBg: "#18373D",
   },
-  dPurple: {
-    name: "Dark Purple",
-    bg: "#151022",
-    text: "#F0E6FF",
-    card: "#1B1630",
-    tint: "#BF5AF2",
-    buttonBg: "#221B3D",
-    inputBg: "#241F3E",
+  dBurgundy: {
+    name: "Burgundy",
+    bg: "#1A0D10",
+    text: "#F8E8EC",
+    card: "#2A1418",
+    tint: "#E94F73",
+    buttonBg: "#2A1B20",
+    inputBg: "#3A2228",
   },
-  dGray: {
-    name: "Dark Gray",
-    bg: "#121212",
-    text: "#EDEDED",
-    card: "#1C1C1E",
-    tint: "#98989D",
-    buttonBg: "#2A2A2C",
-    inputBg: "#1E1E20",
+  dMystery: {
+    name: "Mystery",
+    bg: "#121820",
+    text: "#E0E6ED",
+    card: "#1B232D",
+    tint: "#5DA9E9",
+    buttonBg: "#1A2430",
+    inputBg: "#212C38",
   },
 };
 
@@ -80,8 +80,17 @@ type ThemeCtx = {
   setThemeName: (name: keyof typeof THEMES) => void;
 };
 const ThemeContext = createContext<ThemeCtx | null>(null);
+
 const THEME_KEY = "theme_name_v1";
 const DEFAULT_NAME: keyof typeof THEMES = "lBlue";
+
+export const spacing = {
+  xs: 4,
+  sm: 8,
+  md: 12,
+  lg: 16,
+  xl: 24,
+};
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [name, setName] = useState<keyof typeof THEMES>(DEFAULT_NAME);
@@ -116,19 +125,48 @@ export function useTheme() {
 
 export const stylesFromTheme = (t: Theme) => ({
   screen: { flex: 1, backgroundColor: t.bg } as ViewStyle,
-  card: { backgroundColor: t.card, borderRadius: 12, padding: 12 } as ViewStyle,
-  text: { color: t.text } as TextStyle,
+  card: {
+    backgroundColor: t.card,
+    borderRadius: 12,
+    padding: spacing.md,
+  } as ViewStyle,
+
+  textHeading: {
+    color: t.text,
+    fontSize: 20,
+    fontWeight: "700",
+  } as TextStyle,
+  textSubheading: {
+    color: t.text,
+    fontSize: 16,
+    fontWeight: "600",
+  } as TextStyle,
+  textBody: {
+    color: t.text,
+    fontSize: 15,
+  } as TextStyle,
+  textMuted: {
+    color: t.text + "99",
+    fontSize: 14,
+  } as TextStyle,
+
   input: {
     backgroundColor: t.inputBg,
     color: t.text,
-    padding: 10,
+    padding: spacing.sm,
     borderRadius: 8,
   } as TextStyle,
+
   button: {
     backgroundColor: t.buttonBg,
-    padding: 10,
-    borderRadius: 10,
+    paddingVertical: spacing.md,
+    paddingHorizontal: spacing.lg,
+    borderRadius: 12,
     alignItems: "center",
   } as ViewStyle,
-  buttonText: { color: t.text, fontWeight: "600" } as TextStyle,
+  buttonText: {
+    color: t.text,
+    fontWeight: "600",
+    fontSize: 16,
+  } as TextStyle,
 });

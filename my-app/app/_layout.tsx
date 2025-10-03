@@ -1,17 +1,21 @@
 import { Stack } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 import React from "react";
-import { ThemeProvider, useTheme } from "../components/Theme";
+import { ThemeProvider, useTheme } from "../contexts/Theme";
 
 function LayoutInner() {
   const { theme } = useTheme();
   return (
-    <Stack
-      screenOptions={{
-        headerStyle: { backgroundColor: theme.card },
-        headerTitleStyle: { color: theme.text },
-        headerTintColor: theme.tint,
-      }}
-    />
+    <>
+      <StatusBar style={theme.name.startsWith("d") ? "light" : "dark"} />
+      <Stack
+        screenOptions={{
+          headerStyle: { backgroundColor: theme.card },
+          headerTitleStyle: { color: theme.text },
+          headerTintColor: theme.tint,
+        }}
+      />
+    </>
   );
 }
 
