@@ -1,27 +1,44 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import React from "react";
 import { Pressable, Text, View } from "react-native";
+import { spacing, stylesFromTheme, useTheme } from "../contexts/Theme";
 import { Crime } from "../lib/storage";
-import { stylesFromTheme, useTheme } from "./Theme";
 
-export function CrimeItem({ crime, onPress }: { crime: Crime; onPress: () => void }) {
+export function CrimeItem({
+  crime,
+  onPress,
+}: {
+  crime: Crime;
+  onPress: () => void;
+}) {
   const { theme } = useTheme();
   const S = stylesFromTheme(theme);
+
   return (
     <Pressable
       onPress={onPress}
       style={({ pressed }) => [
-        { padding: 14, borderBottomWidth: 1, borderBottomColor: theme.buttonBg, flexDirection: "row", alignItems: "center" },
+        {
+          padding: spacing.md,
+          borderBottomWidth: 1,
+          borderBottomColor: theme.tint,
+          flexDirection: "row",
+          alignItems: "center",
+        },
         pressed && { opacity: 0.6 },
       ]}
     >
       <View style={{ flex: 1 }}>
-        <Text style={[S.text, { fontWeight: "600", marginBottom: 4 }]} numberOfLines={1}>
+        <Text style={S.textHeading} numberOfLines={1}>
           {crime.title || "(Untitled Crime)"}
         </Text>
-        <Text style={[S.text, { opacity: 0.7 }]}>{new Date(crime.dateISO).toDateString()}</Text>
+        <Text style={S.textSubheading}>
+          {new Date(crime.dateISO).toDateString()}
+        </Text>
       </View>
-      {crime.solved && <MaterialCommunityIcons name="handcuffs" size={22} color={theme.tint} />}
+      {crime.solved && (
+        <MaterialCommunityIcons name="handcuffs" size={22} color={theme.tint} />
+      )}
     </Pressable>
   );
 }

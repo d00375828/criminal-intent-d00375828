@@ -5,7 +5,7 @@ import React, { useCallback, useLayoutEffect, useState } from "react";
 import { FlatList, Pressable, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { CrimeItem } from "../components/CrimeStuffs";
-import { stylesFromTheme, useTheme } from "../components/Theme";
+import { spacing, stylesFromTheme, useTheme } from "../contexts/Theme";
 import { Crime, loadCrimes, uuid } from "../lib/storage";
 
 export default function IndexScreen() {
@@ -30,17 +30,24 @@ export default function IndexScreen() {
     nav.setOptions({
       title: "Criminal Intent",
       headerRight: () => (
-        <View style={{ flexDirection: "row", gap: 16, marginRight: 8 }}>
+        <View
+          style={{
+            flexDirection: "row",
+            gap: spacing.lg,
+            marginRight: spacing.sm,
+          }}
+        >
           <Pressable
             onPress={() => {
               const id = uuid();
               router.push({ pathname: "/crime/[id]", params: { id } });
             }}
+            hitSlop={8}
           >
             <Ionicons name="add" size={26} color={theme.tint} />
           </Pressable>
 
-          <Pressable onPress={() => router.push("/settings")}>
+          <Pressable onPress={() => router.push("/settings")} hitSlop={8}>
             <Ionicons name="settings-outline" size={24} color={theme.tint} />
           </Pressable>
         </View>
@@ -64,7 +71,10 @@ export default function IndexScreen() {
         data={crimes}
         keyExtractor={(c) => c.id}
         renderItem={renderItem}
-        contentContainerStyle={{ backgroundColor: theme.card }}
+        contentContainerStyle={{
+          backgroundColor: theme.card,
+          paddingVertical: spacing.md,
+        }}
       />
     </SafeAreaView>
   );

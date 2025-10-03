@@ -1,10 +1,9 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Stack, useNavigation } from "expo-router";
 import React, { useLayoutEffect } from "react";
-import { Alert, Pressable, Text, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { stylesFromTheme, THEMES, useTheme } from "../components/Theme";
-import { clearCrimes } from "../lib/storage";
+import { spacing, stylesFromTheme, THEMES, useTheme } from "../contexts/Theme";
 
 export default function SettingsScreen() {
   const nav = useNavigation();
@@ -29,16 +28,23 @@ export default function SettingsScreen() {
   }, [nav, theme.tint]);
 
   return (
-    <SafeAreaView style={[S.screen, { padding: 12 }]}>
+    <SafeAreaView style={[S.screen, { padding: spacing.md }]}>
       <Stack.Screen options={{ headerShown: true }} />
 
       <Text
-        style={[S.text, { fontSize: 18, fontWeight: "700", marginBottom: 12 }]}
+        style={[
+          S.textHeading,
+          {
+            marginBottom: spacing.xl,
+            textAlign: "center",
+            alignSelf: "center",
+          },
+        ]}
       >
         Themes
       </Text>
 
-      <View style={{ gap: 10 }}>
+      <View style={{ gap: spacing.md }}>
         {Object.entries(THEMES).map(([key, t]) => (
           <Pressable
             key={key}
@@ -55,16 +61,6 @@ export default function SettingsScreen() {
           </Pressable>
         ))}
       </View>
-
-      <Pressable
-        style={[S.button, { marginTop: 20 }]}
-        onPress={async () => {
-          await clearCrimes();
-          Alert.alert("Reset", "All crimes cleared.");
-        }}
-      >
-        <Text style={S.buttonText}>Reset Crimes (Testing)</Text>
-      </Pressable>
     </SafeAreaView>
   );
 }
