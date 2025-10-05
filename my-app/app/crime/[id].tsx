@@ -5,10 +5,14 @@ import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { Alert, Image, Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+
+import { Button } from "../../components/Button";
 import { DateModal } from "../../components/DateModal";
 import { PhotoPickerButton } from "../../components/PhotoPicker";
 import { SolvedToggle } from "../../components/Solved";
 import { ThemedTextInput } from "../../components/ThemeText";
+import { ThemedView } from "../../components/ThemeView";
+
 import { spacing, stylesFromTheme, useTheme } from "../../contexts/Theme";
 import { Crime, getCrime, upsertCrime } from "../../lib/storage";
 
@@ -76,82 +80,78 @@ export default function CrimeDetail() {
   };
 
   return (
-    <SafeAreaView style={[S.screen, { padding: spacing.md }]}>
-      <View
-        style={{
-          flexDirection: "row",
-          gap: spacing.md,
-          alignItems: "flex-start",
-        }}
-      >
-        <View style={{ width: 72, alignItems: "center" }}>
-          {photoUri ? (
-            <Image
-              source={{ uri: photoUri }}
-              style={{ width: 72, height: 72, borderRadius: 8 }}
-            />
-          ) : (
-            <View
-              style={[
-                S.card,
-                {
+    <SafeAreaView style={[S.screen]}>
+      <ThemedView variant="screen" fill style={{ padding: spacing.md }}>
+        <View
+          style={{
+            flexDirection: "row",
+            gap: spacing.md,
+            alignItems: "flex-start",
+          }}
+        >
+          <View style={{ width: 72, alignItems: "center" }}>
+            {photoUri ? (
+              <Image
+                source={{ uri: photoUri }}
+                style={{ width: 72, height: 72, borderRadius: 8 }}
+              />
+            ) : (
+              <ThemedView
+                variant="card"
+                style={{
                   width: 72,
                   height: 72,
                   justifyContent: "center",
                   alignItems: "center",
-                },
-              ]}
+                }}
+              />
+            )}
+            <View style={{ height: spacing.sm }} />
+            <PhotoPickerButton onPicked={setPhotoUri} width={72} />
+          </View>
+
+          <View style={{ flex: 1, gap: spacing.sm }}>
+            <Text style={S.textSubheading}>Title</Text>
+            <ThemedTextInput
+              value={title}
+              onChangeText={setTitle}
+              placeholder="Enter title"
             />
-          )}
-          <View style={{ height: spacing.sm }} />
-          <PhotoPickerButton onPicked={setPhotoUri} width={72} />
+          </View>
         </View>
 
-        <View style={{ flex: 1, gap: spacing.sm }}>
-          <Text style={S.textSubheading}>Title</Text>
-          <ThemedTextInput
-            value={title}
-            onChangeText={setTitle}
-            placeholder="Enter title"
-          />
-        </View>
-      </View>
+        <View style={{ height: spacing.md }} />
 
-      <View style={{ height: spacing.md }} />
+        <Text style={S.textSubheading}>Details</Text>
+        <ThemedTextInput
+          value={details}
+          onChangeText={setDetails}
+          placeholder="What happened?"
+          multiline
+          style={{ minHeight: 90, textAlignVertical: "top" }}
+        />
 
-      <Text style={S.textSubheading}>Details</Text>
-      <ThemedTextInput
-        value={details}
-        onChangeText={setDetails}
-        placeholder="What happened?"
-        multiline
-        style={{ minHeight: 90, textAlignVertical: "top" }}
-      />
+        <View style={{ height: spacing.md }} />
 
-      <View style={{ height: spacing.md }} />
-
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        <Pressable
-          style={[S.button, { flex: 1, marginRight: spacing.sm }]}
-          onPress={() => setDateOpen(true)}
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
         >
-          <Text style={S.buttonText}>{date.toDateString()}</Text>
-        </Pressable>
+          <Button
+            title={date.toDateString()}
+            onPress={() => setDateOpen(true)}
+            style={{ flex: 1, marginRight: spacing.sm }}
+          />
+          <SolvedToggle value={solved} onChange={setSolved} />
+        </View>
 
-        <SolvedToggle value={solved} onChange={setSolved} />
-      </View>
+        <View style={{ height: spacing.lg }} />
 
-      <View style={{ height: spacing.lg }} />
-
-      <Pressable style={S.button} onPress={onSave}>
-        <Text style={S.buttonText}>Save</Text>
-      </Pressable>
+        <Button title="Save" onPress={onSave} />
+      </ThemedView>
 
       <DateModal
         visible={dateOpen}
