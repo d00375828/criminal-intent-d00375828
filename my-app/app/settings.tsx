@@ -3,6 +3,7 @@ import { Stack, useNavigation } from "expo-router";
 import React, { useLayoutEffect } from "react";
 import { Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { ThemedView } from "../components/ThemeView";
 import { spacing, stylesFromTheme, THEMES, useTheme } from "../contexts/Theme";
 
 export default function SettingsScreen() {
@@ -28,39 +29,42 @@ export default function SettingsScreen() {
   }, [nav, theme.tint]);
 
   return (
-    <SafeAreaView style={[S.screen, { padding: spacing.md }]}>
-      <Stack.Screen options={{ headerShown: true }} />
+    <SafeAreaView style={[S.screen]}>
+      <ThemedView variant="screen" fill style={{ padding: spacing.md }}>
+        <Stack.Screen options={{ headerShown: true }} />
 
-      <Text
-        style={[
-          S.textHeading,
-          {
-            marginBottom: spacing.xl,
-            textAlign: "center",
-            alignSelf: "center",
-          },
-        ]}
-      >
-        Themes
-      </Text>
+        <Text
+          style={[
+            S.textHeading,
+            {
+              marginBottom: spacing.xl,
+              textAlign: "center",
+              alignSelf: "center",
+            },
+          ]}
+        >
+          Themes
+        </Text>
 
-      <View style={{ gap: spacing.md }}>
-        {Object.entries(THEMES).map(([key, t]) => (
-          <Pressable
-            key={key}
-            style={[
-              S.button,
-              {
-                borderWidth: theme.name === t.name ? 2 : 0,
-                borderColor: theme.tint,
-              },
-            ]}
-            onPress={() => setThemeName(key as keyof typeof THEMES)}
-          >
-            <Text style={S.buttonText}>{t.name}</Text>
-          </Pressable>
-        ))}
-      </View>
+        <View style={{ gap: spacing.md }}>
+          {Object.entries(THEMES).map(([key, t]) => (
+            <Pressable
+              key={key}
+              style={[
+                S.button,
+                {
+                  borderWidth: theme.name === t.name ? 2 : 0,
+                  borderColor: theme.tint,
+                  paddingVertical: 14,
+                },
+              ]}
+              onPress={() => setThemeName(key as keyof typeof THEMES)}
+            >
+              <Text style={[S.buttonText, { fontSize: 16 }]}>{t.name}</Text>
+            </Pressable>
+          ))}
+        </View>
+      </ThemedView>
     </SafeAreaView>
   );
 }
